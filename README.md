@@ -1,9 +1,12 @@
-# Nome do projeto
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
+# Restaurante - GRUPO PAMPULHA
+
+O objetivo do nosso grupo é desenvolver um código que funcione corretamente atendendo aos requisitos e ao que será pedido pelo professor durante a sala de aula. 
+
+
 
 ## Alunos integrantes da equipe
 
-* Nome completo do aluno 1
+* Miguel Pedrosa do Carmo Nonato
 * Nome completo do aluno 2
 * Nome completo do aluno 3
 * Nome completo do aluno 4
@@ -12,6 +15,6 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 
 ## Professores responsáveis
 
-* Nome completo do professor 1
-* Nome completo do professor 2
+* João Caram Santos de Oliveira
+
 
