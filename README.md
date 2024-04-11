@@ -7,11 +7,11 @@ O objetivo do nosso grupo é desenvolver um código que funcione corretamente at
 ## Alunos integrantes da equipe
 
 * Miguel Pedrosa do Carmo Nonato
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 4
-* Nome completo do aluno 4
+* Felipe Luiz Parreiras Lima
+* Caio Henrique
+* Vitor Pereira
+
+
 
 ## Professores responsáveis
 
