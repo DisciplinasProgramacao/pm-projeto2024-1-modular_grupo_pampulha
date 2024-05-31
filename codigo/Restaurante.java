@@ -4,64 +4,69 @@ import java.util.*;
 
 public class Restaurante {
 
-	private static int MAX_FILA;
-	private static int MAX_CLIENTES;
-	private Mesa[] mesas;
-	private Cliente[] clientes;
-	private Requisicao[] atendidas;
-	private Requisicao[] espera;
-	private int quantClientes;
-	private int quantMesas;
-	private int requisicoesAtendidas;
-	private int requisicoesEmEspera;
+    private String nomeRestaurante;
+    private Map<Integer, Mesa> mesas;
 
-	public Restaurante() {
+    public Restaurante(String nomeRestaurante) {
+        this.nomeRestaurante = nomeRestaurante;
+        this.mesas = new HashMap<>();
+        gerarMesas();
+    }
 
-	}
-		
+    private void gerarMesas() {
+        // Adiciona 4 mesas de capacidade 4
+        for (int i = 1; i <= 4; i++) {
+            mesas.put(i, new Mesa(4));
+        }
+        // Adiciona 4 mesas de capacidade 6
+        for (int i = 5; i <= 8; i++) {
+            mesas.put(i, new Mesa(6));
+        }
+        // Adiciona 2 mesas de capacidade 8
+        for (int i = 9; i <= 10; i++) {
+            mesas.put(i, new Mesa(8));
+        }
+    }
 
-	public void criarMesas() {
-		
-	}
+    private boolean verificarMesaVazia(Mesa mesa) {
+        return !mesa.mesaLotada();
+    }
 
-	public void addCliente(Cliente novo) {
-		
-	}
+    public boolean requerirMesa(int quantidade, Mesa mesa, Cliente cliente) {
+        if (verificarMesaVazia(mesa)) {
+            mesa.registrarEntrada(cliente);
+            System.out.println("Hora de Inicio:" + mesa.getInicio());
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public Cliente localizarCliente(int idCli) {
-		
-	}
+    public boolean sairMesa(Mesa mesa) {
+        if (!verificarMesaVazia(mesa)) {
+            mesa.registrarSaida();
+            System.out.println("Hora de Encerramento:" + mesa.getFim());
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	public Mesa localizarMesa(int quantPessoas) {
-		
-	}
+    public String getNomeRestaurante() {
+        return nomeRestaurante;
+    }
 
-	public void encerrarAtendimento(int Mesa) {
-		
-	}
+    public void setNomeRestaurante(String nomeRestaurante) {
+        this.nomeRestaurante = nomeRestaurante;
+    }
 
-	public Requisicao processarFila() {
-		
-	}
+    public Map<Integer, Mesa> getMesas() {
+        return mesas;
+    }
 
-	public void retirarDaFila(int pos) {
-		
-	}
+    public void setMesas(Map<Integer, Mesa> mesas) {
+        this.mesas = mesas;
+    }
 
-	public void registrarRequisicao(Requisicao novaRequisicao) {
-		
-	}
-
-	public void AtenderRequisicao(Requisicao requisicao, Mesa mesa) {
-		
-	}
-
-	public String statusMesa() {
-		
-	}
-
-	public String filaDeEspera() {
-		
-	}
-
+	
 }

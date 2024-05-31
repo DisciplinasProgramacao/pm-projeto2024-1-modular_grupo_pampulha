@@ -26,7 +26,7 @@ public class App {
                     int quantReserva = scan.nextInt();
                     scan.nextLine(); // Limpar o buffer do scanner
                     Cliente cliente = new Cliente(nomeReserva, quantReserva);
-                    System.out.println("Cliente: " + cliente.getNome() + ", Quantidade de pessoas: " + cliente.getQuantPessoas());
+                    System.out.println("Cliente: " + cliente.getNomeCliente() + ", Quantidade de pessoas: " + cliente.getQuantPessoas());
                     // Para requerir uma mesa, você precisa especificar a mesa corretamente
                     // Aqui estou apenas passando a primeira mesa do restaurante como exemplo
                     boolean mesaRequerida = restaurante.requerirMesa(quantReserva, restaurante.getMesas().get(1), cliente);
