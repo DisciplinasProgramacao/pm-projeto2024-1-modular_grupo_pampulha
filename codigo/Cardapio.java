@@ -1,54 +1,37 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Cardapio{
-    private List<Item> comidas;
-    private List<Item> bebidas;
+public class Cardapio {
+    private Map<Integer, ItemMenu> itens;
 
-   public Cardapio() {
-        comidas = new ArrayList<>();
-        bebidas = new ArrayList<>();
+    public Cardapio() {
+        itens = new HashMap<>();
+        inicializarCardapio();
     }
 
-    public void adicionarComida(String nome, double preco) {
-        comidas.add(new Item(nome, preco, "Comida"));
+    private void inicializarCardapio() {
+        itens.put(1, new ItemMenu(1, "Moqueca de Palmito", 32.0));
+        itens.put(2, new ItemMenu(2, "Falafel Assado", 20.0));
+        itens.put(3, new ItemMenu(3, "Salada Primavera com Macarrão Konjac", 25.0));
+        itens.put(4, new ItemMenu(4, "Escondidinho de Inhame", 18.0));
+        itens.put(5, new ItemMenu(5, "Strogonoff de Cogumelos", 35.0));
+        itens.put(6, new ItemMenu(6, "Caçarola de legumes", 22.0));
+        itens.put(7, new ItemMenu(7, "Água", 3.0));
+        itens.put(8, new ItemMenu(8, "Copo de suco", 7.0));
+        itens.put(9, new ItemMenu(9, "Refrigerante orgânico", 7.0));
+        itens.put(10, new ItemMenu(10, "Cerveja vegana", 9.0));
+        itens.put(11, new ItemMenu(11, "Taça de vinho vegano", 18.0));
     }
 
-    public void adicionarBebida(String nome, double preco) {
-        bebidas.add(new Item(nome, preco, "Bebida"));
+    public ItemMenu getItem(int codigoItem) {
+        return itens.get(codigoItem);
     }
 
-    public void mostrarOpcoes() {
-        System.out.println("Comidas:");
-        for (int i = 0; i < comidas.size(); i++) {
-            System.out.println((i + 1) + ". " + comidas.get(i));
+    public String listarItens() {
+        StringBuilder sb = new StringBuilder();
+        for (ItemMenu item : itens.values()) {
+            sb.append(item.getCodigo()).append(". ").append(item.getNome()).append(" - R$ ").append(item.getPreco()).append("\n");
         }
-        System.out.println("\nBebidas:");
-        for (int i = 0; i < bebidas.size(); i++) {
-            System.out.println((i + 1) + ". " + bebidas.get(i));
-        }
-    }
-
-    public Item pegarItem(String nome) {
-        for (Item item : comidas) {
-            if (item.getNome().equalsIgnoreCase(nome)) {
-                return item;
-            }
-        }
-        for (Item item : bebidas) {
-            if (item.getNome().equalsIgnoreCase(nome)) {
-                return item;
-            }
-        }
-        return null;
-    }
-    public void mostrarItem(String nome) {
-        Item item = pegarItem(nome);
-        if (item != null) {
-            System.out.println("Item: " + item.getNome());
-            System.out.println("Preço: R$ " + String.format("%.2f", item.getPreco()));
-        } else {
-            System.out.println("Item não encontrado");
-        }
+        return sb.toString();
     }
 }

@@ -2,68 +2,75 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Restaurante {
-
     private String nomeRestaurante;
     private Map<Integer, Mesa> mesas;
+    private Cardapio cardapio;
 
     public Restaurante(String nomeRestaurante) {
+        if (nomeRestaurante.length() < 2) {
+            throw new IllegalArgumentException("O nome do restaurante deve ter pelo menos 2 caracteres.");
+        }
         this.nomeRestaurante = nomeRestaurante;
         this.mesas = new HashMap<>();
-        gerarMesas();
+        this.cardapio = new Cardapio();
+        inicializarMesas();
     }
 
-    private void gerarMesas() {
-        // Adiciona 4 mesas de capacidade 4
+    private void inicializarMesas() {
         for (int i = 1; i <= 4; i++) {
             mesas.put(i, new Mesa(4));
         }
-        // Adiciona 4 mesas de capacidade 6
         for (int i = 5; i <= 8; i++) {
             mesas.put(i, new Mesa(6));
         }
-        // Adiciona 2 mesas de capacidade 8
         for (int i = 9; i <= 10; i++) {
             mesas.put(i, new Mesa(8));
         }
     }
 
-    private boolean verificarMesaVazia(Mesa mesa) {
-        return !mesa.mesaLotada();
-    }
-
-    public boolean requerirMesa(int quantidade, Mesa mesa, Cliente cliente) {
-        if (verificarMesaVazia(mesa)) {
-            mesa.registrarEntrada(cliente);
-            System.out.println("Hora de Inicio:" + mesa.getInicio());
-            return true;
-        } else {
-            return false;
+    public boolean requerirMesa(int quantidade, Cliente cliente) {
+        for (Mesa mesa : mesas.values()) {
+            if (!mesa.isOcupada() && mesa.getCapacidade() >= quantidade) {
+                mesa.ocupar(cliente);
+                return true;
+            }
         }
+        return false;
     }
 
-    public boolean sairMesa(Mesa mesa) {
-        if (!verificarMesaVazia(mesa)) {
-            mesa.registrarSaida();
-            System.out.println("Hora de Encerramento:" + mesa.getFim());
-            return true;
-        } else {
-            return false;
+    public void sairMesa(Mesa mesa) {
+        mesa.desocupar();
+    }
+
+    public String listarMesasOcupadas() {
+        StringBuilder sb = new StringBuilder();
+        for (Mesa mesa : mesas.values()) {
+            if (mesa.isOcupada()) {
+                sb.append(mesa).append("\n");
+            }
         }
+        return sb.toString();
     }
 
-    public String getNomeRestaurante() {
-        return nomeRestaurante;
+    public boolean realizarPedido(int codigoItem, Mesa mesa) {
+        ItemMenu item = cardapio.getItem(codigoItem);
+        if (item != null) {
+            Pedido pedido = new Pedido(item);
+            mesa.adicionarPedido(pedido);
+            return true;
+        }
+        return false;
     }
 
-    public void setNomeRestaurante(String nomeRestaurante) {
-        this.nomeRestaurante = nomeRestaurante;
+    public String listarItensCardapio() {
+        return cardapio.listarItens();
     }
 
     public Map<Integer, Mesa> getMesas() {
         return mesas;
     }
 
-    public void setMesas(Map<Integer, Mesa> mesas) {
-        this.mesas = mesas;
+    public String getNomeRestaurante() {
+        return nomeRestaurante;
     }
 }

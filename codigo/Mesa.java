@@ -1,93 +1,83 @@
-
-import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mesa {
+    private static int ultimoID = 0;
+    private int idMesa;
+    private int capacidade;
+    private boolean ocupada;
+    private Cliente cliente;
+    private List<Pedido> pedidos;
 
-	private static int ultimoID;
-	private int idMesa;
-	private int capacidade;
-	private boolean ocupada;
+    public Mesa(int capacidade) {
+        this.idMesa = ++ultimoID;
+        this.capacidade = Math.max(2, capacidade);
+        this.ocupada = false;
+        this.pedidos = new ArrayList<>();
+    }
 
-	static {
-		ultimoID = 0;
-	}
+    public int getIdMesa() {
+        return idMesa;
+    }
 
-	/**
-	 * Cria uma mesa com capacidade mínima de 2 pessoas e id auto-gerado.
-	 * 
-	 * @param capacidade Capacidade da mesa. Deve ser maior ou igual a 2.
-	 */
-	public Mesa(int capacidade) {
-		this.capacidade = 2;
-		if (capacidade > 2)
-			this.capacidade = capacidade;
-		idMesa = ++ultimoID;
-		ocupada = false;
-	}
+    public int getCapacidade() {
+        return capacidade;
+    }
 
-	/**
-	 * Sinaliza a mesa como ocupada
-	 */
-	public void ocupar() {
-		ocupada = true;
-	}
+    public boolean isOcupada() {
+        return ocupada;
+    }
 
-	/**
-	 * Sinaliza a mesa como desocupada
-	 */
-	public void desocupar() {
-		ocupada = false;
-	}
+    public Cliente getCliente() {
+        return cliente;
+    }
 
-	/**
-	 * Verifica se a mesa pode atender um número determinado de pessoas, citado no
-	 * parâmetro quantPessoas.
-	 * 
-	 * @param quantPessoas Quantidade de pessoas a serem atendidas
-	 * @return TRUE/FALSE conforme a mesa pode atender ou não esta quantidade.
-	 */
-	public boolean estahLiberada(int quantPessoas) {
-		return (quantPessoas <= capacidade && !ocupada);
-	}
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 
-	public int getIdMesa() {
-		return idMesa;
-	}
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
 
-	public String toString() {
-		String descricao = String.format("Mesa %02d (%d pessoas), ", idMesa, capacidade);
-		if (ocupada)
-			descricao += "ocupada.";
-		else
-			descricao += "liberada.";
+    public void ocupar(Cliente cliente) {
+        this.ocupada = true;
+        this.cliente = cliente;
+    }
 
-		return descricao;
-	}
+    public void desocupar() {
+        this.ocupada = false;
+        this.cliente = null;
+        this.pedidos.clear();
+    }
 
-	public void setIdMesa(int idMesa) {
-		this.idMesa = idMesa;
-	}
+    public void adicionarPedido(Pedido pedido) {
+        this.pedidos.add(pedido);
+    }
 
-	public int getCapacidade() {
-		return this.capacidade;
-	}
+    public String listarPedidos() {
+        StringBuilder sb = new StringBuilder();
+        for (Pedido pedido : pedidos) {
+            sb.append(pedido).append("\n");
+        }
+        return sb.toString();
+    }
 
-	public void setCapacidade(int capacidade) {
-		this.capacidade = capacidade;
-	}
+    public double calcularValorTotal() {
+        double total = 0;
+        for (Pedido pedido : pedidos) {
+            total += pedido.calcularValor();
+        }
+        return total;
+    }
 
-	public boolean isOcupada() {
-		return this.ocupada;
-	}
+    public double calcularValorComTaxa() {
+        return calcularValorTotal() * 1.10;
+    }
 
-	public boolean getOcupada() {
-		return this.ocupada;
-	}
-
-	public void setOcupada(boolean ocupada) {
-		this.ocupada = ocupada;
-	}
-
-
+    @Override
+    public String toString() {
+        return "Mesa ID: " + idMesa + ", Capacidade: " + capacidade + ", Ocupada: " + ocupada +
+               (ocupada ? ", Responsável: " + cliente.getNome() : "");
+    }
 }

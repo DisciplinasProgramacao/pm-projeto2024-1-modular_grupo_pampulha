@@ -1,93 +1,176 @@
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
-import java.io.*;
-import java.util.*;
+public class App {
+    private static Restaurante restaurante;
 
-public class Mesa {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        inicializarRestaurante(scan);
 
-	private static int ultimoID;
-	private int idMesa;
-	private int capacidade;
-	private boolean ocupada;
+        boolean funcionando = true;
+        while (funcionando) {
+            exibirMenu();
+            int opcao = scan.nextInt();
+            scan.nextLine(); // Limpar o buffer do scanner
 
-	static {
-		ultimoID = 0;
-	}
+            switch (opcao) {
+                case 1:
+                    realizarReserva(scan);
+                    break;
+                case 2:
+                    finalizarReserva(scan);
+                    break;
+                case 3:
+                    listarMesasOcupadas();
+                    break;
+                case 4:
+                    realizarPedido(scan);
+                    break;
+                case 5:
+                    listarPedidosMesa(scan);
+                    break;
+                case 6:
+                    funcionando = false;
+                    System.out.println("Saindo...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+        scan.close();
+    }
 
-	/**
-	 * Cria uma mesa com capacidade mínima de 2 pessoas e id auto-gerado.
-	 * 
-	 * @param capacidade Capacidade da mesa. Deve ser maior ou igual a 2.
-	 */
-	public Mesa(int capacidade) {
-		this.capacidade = 2;
-		if (capacidade > 2)
-			this.capacidade = capacidade;
-		idMesa = ++ultimoID;
-		ocupada = false;
-	}
+    private static void inicializarRestaurante(Scanner scan) {
+        System.out.println("Insira o nome do restaurante (mínimo 2 caracteres):");
+        String nomeRestaurante = scan.nextLine();
 
-	/**
-	 * Sinaliza a mesa como ocupada
-	 */
-	public void ocupar() {
-		ocupada = true;
-	}
+        restaurante = new Restaurante(nomeRestaurante);
+        System.out.println("Restaurante " + restaurante.getNomeRestaurante() + " criado com sucesso.");
+    }
 
-	/**
-	 * Sinaliza a mesa como desocupada
-	 */
-	public void desocupar() {
-		ocupada = false;
-	}
+    private static void exibirMenu() {
+        System.out.println("### Menu Principal ###");
+        System.out.println("1. Realizar Reserva");
+        System.out.println("2. Finalizar Reserva");
+        System.out.println("3. Listar Mesas Ocupadas");
+        System.out.println("4. Realizar Pedido");
+        System.out.println("5. Listar Pedidos de uma Mesa");
+        System.out.println("6. Sair");
+    }
 
-	/**
-	 * Verifica se a mesa pode atender um número determinado de pessoas, citado no
-	 * parâmetro quantPessoas.
-	 * 
-	 * @param quantPessoas Quantidade de pessoas a serem atendidas
-	 * @return TRUE/FALSE conforme a mesa pode atender ou não esta quantidade.
-	 */
-	public boolean estahLiberada(int quantPessoas) {
-		return (quantPessoas <= capacidade && !ocupada);
-	}
+    private static void realizarReserva(Scanner scan) {
+        System.out.println("Insira o nome do responsável pela reserva:");
+        String nomeCliente = scan.nextLine();
+        if (nomeCliente.length() < 2) {
+            System.out.println("O nome do responsável deve ter pelo menos 2 caracteres.");
+            return;
+        }
+        System.out.println("Insira a quantidade de pessoas para a reserva:");
+        int quantReserva = scan.nextInt();
+        scan.nextLine(); // Limpar o buffer do scanner
 
-	public int getIdMesa() {
-		return idMesa;
-	}
+        Cliente cliente = new Cliente(nomeCliente, quantReserva);
+        boolean mesaRequerida = restaurante.requerirMesa(quantReserva, cliente);
 
-	public String toString() {
-		String descricao = String.format("Mesa %02d (%d pessoas), ", idMesa, capacidade);
-		if (ocupada)
-			descricao += "ocupada.";
-		else
-			descricao += "liberada.";
+        if (mesaRequerida) {
+            System.out.println("Reserva realizada com sucesso para " + cliente.getNome() + ".");
+        } else {
+            System.out.println("Não foi possível realizar a reserva. Verifique a disponibilidade e tente novamente.");
+        }
+    }
 
-		return descricao;
-	}
+    private static void finalizarReserva(Scanner scan) {
+    	listarMesasComResponsaveis();
+        System.out.println("Insira o número da mesa que deseja finalizar a reserva:");
+        int numeroMesa = scan.nextInt();
+        scan.nextLine(); // Limpar o buffer do scanner
 
-	public void setIdMesa(int idMesa) {
-		this.idMesa = idMesa;
-	}
+        Mesa mesa = restaurante.getMesas().get(numeroMesa);
+        if (mesa != null && mesa.isOcupada()) {
+            System.out.println("Finalizando reserva da mesa " + numeroMesa + ".");
+            System.out.println("### Pedidos da Mesa ###");
+            System.out.println(mesa.listarPedidos());
+            System.out.println("Valor Total: R$ " + mesa.calcularValorTotal());
+            System.out.println("Valor Total com Taxa de Serviço: R$ " + mesa.calcularValorComTaxa());
+            restaurante.sairMesa(mesa);
+        } else {
+            System.out.println("Mesa não encontrada ou já está desocupada.");
+        }
+    }
 
-	public int getCapacidade() {
-		return this.capacidade;
-	}
+    private static void listarMesasOcupadas() {
+        System.out.println("### Mesas Ocupadas ###");
+        String mesasOcupadas = restaurante.listarMesasOcupadas();
+        System.out.println(mesasOcupadas);
+    }
 
-	public void setCapacidade(int capacidade) {
-		this.capacidade = capacidade;
-	}
+    private static void realizarPedido(Scanner scan) {
+        System.out.println("### Realizar Pedido ###");
+        listarMesasComResponsaveis();
+        System.out.println("Digite o número da mesa que deseja realizar o pedido:");
+        int numeroMesa = scan.nextInt();
+        scan.nextLine(); // Limpar o buffer do scanner
 
-	public boolean isOcupada() {
-		return this.ocupada;
-	}
+        if (restaurante.getMesas().containsKey(numeroMesa)) {
+            Mesa mesa = restaurante.getMesas().get(numeroMesa);
+            if (mesa.isOcupada()) {
+            	exibirCardapio();
+                System.out.println("Digite o código do item do cardápio:");
+                int codigoItem = scan.nextInt();
+                scan.nextLine(); // Limpar o buffer do scanner
 
-	public boolean getOcupada() {
-		return this.ocupada;
-	}
+                boolean pedidoRealizado = restaurante.realizarPedido(codigoItem, mesa);
+                if (pedidoRealizado) {
+                    System.out.println("Pedido realizado com sucesso.");
+                } else {
+                    System.out.println("Não foi possível realizar o pedido. Verifique o código do item e tente novamente.");
+                }
+            } else {
+                System.out.println("Mesa não está ocupada. Realize uma reserva antes de fazer um pedido.");
+            }
+        } else {
+            System.out.println("Mesa não encontrada. Por favor, verifique o número da mesa e tente novamente.");
+        }
+    }
 
-	public void setOcupada(boolean ocupada) {
-		this.ocupada = ocupada;
-	}
+    private static void listarPedidosMesa(Scanner scan) {
+        System.out.println("### Listar Pedidos de uma Mesa ###");
+        listarMesasComResponsaveis();
+        System.out.println("Digite o número da mesa para listar os pedidos:");
+        int numeroMesa = scan.nextInt();
+        scan.nextLine(); // Limpar o buffer do scanner
 
+        if (restaurante.getMesas().containsKey(numeroMesa)) {
+            Mesa mesa = restaurante.getMesas().get(numeroMesa);
+            List<Pedido> pedidos = mesa.getPedidos();
+            if (pedidos.isEmpty()) {
+                System.out.println("Esta mesa não possui pedidos.");
+            } else {
+                System.out.println("### Pedidos da Mesa " + mesa.getIdMesa() + " ###");
+                for (Pedido pedido : pedidos) {
+                    System.out.println(pedido);
+                }
+            }
+        } else {
+            System.out.println("Mesa não encontrada. Por favor, verifique o número da mesa e tente novamente.");
+        }
+    }
 
+    private static void exibirCardapio() {
+        System.out.println("### Cardápio ###");
+        String cardapio = restaurante.listarItensCardapio();
+        System.out.println(cardapio);
+    }
+
+    private static void listarMesasComResponsaveis() {
+        System.out.println("### Mesas e Responsáveis ###");
+        for (Map.Entry<Integer, Mesa> entry : restaurante.getMesas().entrySet()) {
+            Mesa mesa = entry.getValue();
+            if (mesa.isOcupada()) {
+                System.out.println("Mesa ID: " + mesa.getIdMesa() + ", Responsável: " + mesa.getCliente().getNome());
+            }
+        }
+    }
 }
