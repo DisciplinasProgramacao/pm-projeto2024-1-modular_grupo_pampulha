@@ -1,8 +1,8 @@
 public class Pedido {
     private ItemMenu item;
 
-    public Pedido(ItemMenu item) {
-        this.item = item;
+    public Pedido(ItemMenu item2) {
+        this.item = item2;
     }
 
     public double calcularValor() {
@@ -11,6 +11,6 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return item.getNome() + " - R$ " + item.getPreco();
+        return item.getNome() + " - R$ " + String.format("%.2f", item.getPreco());
     }
 }

@@ -1,15 +1,11 @@
-
 public class Item {
     private String nome;
     private double preco;
-    private String tipo;
 
-    public Item(String nome, double preco, String tipo) {
+    public Item(String nome, double preco) {
         this.nome = nome;
         this.preco = preco;
-        this.tipo = tipo;
     }
-
 
     public String getNome() {
         return nome;
@@ -17,10 +13,6 @@ public class Item {
 
     public double getPreco() {
         return preco;
-    }
-
-    public String getTipo() {
-        return tipo;
     }
 
     @Override
