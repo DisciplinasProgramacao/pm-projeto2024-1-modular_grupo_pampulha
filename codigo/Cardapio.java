@@ -30,8 +30,20 @@ public class Cardapio {
     public String listarItens() {
         StringBuilder sb = new StringBuilder();
         for (ItemMenu item : itens.values()) {
-            sb.append(item.getCodigo()).append(". ").append(item.getNome()).append(" - R$ ").append(item.getPreco()).append("\n");
+            sb.append(item).append("\n");
         }
         return sb.toString();
+    }
+
+    public ItemMenu getComidaMenuFechado() {
+        return itens.get(2); // Falafel Assado
+    }
+
+    public ItemMenu getBebidaMenuFechado1() {
+        return itens.get(8); // Copo de suco
+    }
+
+    public ItemMenu getBebidaMenuFechado2() {
+        return itens.get(10); // Cerveja vegana
     }
 }
