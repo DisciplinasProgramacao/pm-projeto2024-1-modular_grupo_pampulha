@@ -75,6 +75,17 @@ public class Mesa {
         return calcularValorTotal() * 1.10;
     }
 
+    // Método específico para adicionar pedidos de menu fechado
+    public void adicionarPedidosMenuFechado(Item comida, Item bebida1, Item bebida2) {
+        Pedido pedidoComida = new Pedido(new ItemMenu(0, comida.getNome(), comida.getPreco())); // ItemMenu com código 0 para identificar no pedido
+        Pedido pedidoBebida1 = new Pedido(new ItemMenu(0, bebida1.getNome(), bebida1.getPreco()));
+        Pedido pedidoBebida2 = new Pedido(new ItemMenu(0, bebida2.getNome(), bebida2.getPreco()));
+
+        pedidos.add(pedidoComida);
+        pedidos.add(pedidoBebida1);
+        pedidos.add(pedidoBebida2);
+    }
+
     @Override
     public String toString() {
         return "Mesa ID: " + idMesa + ", Capacidade: " + capacidade + ", Ocupada: " + ocupada +

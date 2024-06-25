@@ -61,8 +61,6 @@ public class App {
         restaurante = new Restaurante(nomeRestaurante);
         System.out.println("Restaurante " + restaurante.getNomeRestaurante() + " criado com sucesso.");
     }
-
-
     private static void exibirMenu() {
         System.out.println("### Menu Principal ###");
         System.out.println("1. Realizar Reserva");
@@ -73,7 +71,6 @@ public class App {
         System.out.println("6. Listar Pedidos de uma Mesa");
         System.out.println("7. Sair");
     }
-
     private static void realizarReserva(Scanner scan) {
         int quantidade = 0;
 
@@ -115,7 +112,6 @@ public class App {
             System.out.println("Não foi possível encontrar uma mesa disponível para " + cliente.getNome() + ".");
         }
     }
-
     private static void finalizarReserva(Scanner scan) {
     	listarMesasOcupadas();
         int numeroMesa = 0;
@@ -153,13 +149,14 @@ public class App {
             double valorTotalComTaxa = mesa.calcularValorComTaxa();
             System.out.println("Valor Total com Taxa de Serviço: R$ " + valorTotalComTaxa);
             
+            double valorDividido = valorTotalComTaxa / mesa.getCliente().getQuantidadePessoas();
+            System.out.println("Valor Total para Cada Pessoa: R$ " + valorDividido);
+            
             restaurante.sairMesa(mesa);
         } else {
             System.out.println("Mesa não encontrada ou já está desocupada.");
         }
     }
-
-
     private static void listarMesasOcupadas() {
         System.out.println("### Mesas Ocupadas ###");
         Map<Integer, Mesa> mesas = restaurante.getMesas();
@@ -169,7 +166,6 @@ public class App {
             }
         }
     }
-
     private static void realizarPedido(Scanner scan) {
     	listarMesasOcupadas();
         int numeroMesa = 0;
@@ -209,7 +205,6 @@ public class App {
             System.out.println("Mesa não encontrada ou não está ocupada.");
         }
     }
-
     private static void realizarMenuFechado(Scanner scan) {
     	listarMesasOcupadas();
         System.out.println("Digite o número da mesa que deseja realizar o menu fechado:");
@@ -307,10 +302,6 @@ public class App {
             System.out.println("Mesa não encontrada ou não está ocupada.");
         }
     }
-
-
-
-
     private static void listarPedidosMesa(Scanner scan) {
     	listarMesasOcupadas();
         System.out.println("Insira o ID da mesa para listar os pedidos:");
@@ -337,6 +328,6 @@ public class App {
     }
     private static void exibirCardapio() {
         System.out.println("### Cardápio ###");
-        System.out.println(restaurante.listarItensCardapio());;
+        System.out.println(restaurante.listarItensCardapio());
     }
 }
