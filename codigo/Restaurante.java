@@ -5,6 +5,7 @@ public class Restaurante {
     private String nomeRestaurante;
     private Map<Integer, Mesa> mesas;
     private Cardapio cardapio;
+    
 
     public Restaurante(String nomeRestaurante) {
         if (nomeRestaurante.length() < 2) {
