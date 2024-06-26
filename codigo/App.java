@@ -305,11 +305,6 @@ public class App {
             System.out.println("Mesa não encontrada ou não está ocupada.");
         }
     }
-    private static void listarPedidosMesa(Scanner scan) {
-    	listarMesasOcupadas();
-        System.out.println("Insira o ID da mesa para listar os pedidos:");
-        int idMesa = scan.nextInt();
-        scan.nextLine(); // Limpar o buffer do scanner
 
     private static void listarPedidosMesa(Scanner scan) {
     	listarMesasOcupadas();
