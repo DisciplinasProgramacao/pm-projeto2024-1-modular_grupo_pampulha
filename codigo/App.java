@@ -192,7 +192,6 @@ public class App {
 
         Mesa mesa = restaurante.getMesas().get(numeroMesa);
         if (mesa != null && mesa.isOcupada()) {
-            exibirMesasComResponsaveis();
             exibirCardapio();
             System.out.println("Digite o código do item do cardápio:");
             int codigoItem = scan.nextInt();
