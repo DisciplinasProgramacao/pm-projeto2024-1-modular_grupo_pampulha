@@ -105,7 +105,7 @@ public class App {
 
         Cliente cliente = new Cliente(nomeCliente, quantidade);
         boolean sucesso = restaurante.requerirMesa(quantidade, cliente);
-
+      
         if (sucesso) {
             System.out.println("Mesa reservada com sucesso para " + cliente.getNome() + ".");
         } else {
@@ -149,14 +149,17 @@ public class App {
             double valorTotalComTaxa = mesa.calcularValorComTaxa();
             System.out.println("Valor Total com Taxa de Serviço: R$ " + valorTotalComTaxa);
             
+
             double valorDividido = valorTotalComTaxa / mesa.getCliente().getQuantidadePessoas();
             System.out.println("Valor Total para Cada Pessoa: R$ " + valorDividido);
             
+
             restaurante.sairMesa(mesa);
         } else {
             System.out.println("Mesa não encontrada ou já está desocupada.");
         }
     }
+
     private static void listarMesasOcupadas() {
         System.out.println("### Mesas Ocupadas ###");
         Map<Integer, Mesa> mesas = restaurante.getMesas();
@@ -302,6 +305,12 @@ public class App {
             System.out.println("Mesa não encontrada ou não está ocupada.");
         }
     }
+    private static void listarPedidosMesa(Scanner scan) {
+    	listarMesasOcupadas();
+        System.out.println("Insira o ID da mesa para listar os pedidos:");
+        int idMesa = scan.nextInt();
+        scan.nextLine(); // Limpar o buffer do scanner
+
     private static void listarPedidosMesa(Scanner scan) {
     	listarMesasOcupadas();
         System.out.println("Insira o ID da mesa para listar os pedidos:");
